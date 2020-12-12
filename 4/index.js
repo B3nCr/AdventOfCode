@@ -25,44 +25,44 @@ function validatePassport(personstr) {
   });
 
   var res = validatePerson(person);
-
+  if (res) console.log(personstr);
   return res;
 }
 
 function validatePerson(person) {
-  console.log(JSON.stringify(person));
+  // console.log(JSON.stringify(person));
   if (!validateRequiredKeys(Object.keys(person))) {
     return false;
   }
   if (!validateYear(person.byr, 1920, 2002)) {
-    console.log("Invalid byr: ", person.byr);
+    // console.log("Invalid byr: ", person.byr);
     return false;
   }
   if (!validateYear(person.iyr, 2010, 2020)) {
-    console.log("Invalid iyr: ", person.iyr);
+    // console.log("Invalid iyr: ", person.iyr);
     return false;
   }
   if (!validateYear(person.eyr, 2020, 2030)) {
-    console.log("Invalid eyr: ", person.eyr);
+    // console.log("Invalid eyr: ", person.eyr);
     return false;
   }
   if (!validateHeight(person.hgt)) {
-    console.log("Invalid hgt: ", person.hgt);
+    // console.log("Invalid hgt: ", person.hgt);
     return false;
   }
 
   if (!validateHairColour(person.hcl)) {
-    console.log("Invalid hcl: ", person.hcl);
+    // console.log("Invalid hcl: ", person.hcl);
     return false;
   }
 
   if (!validateEyeColour(person.ecl)) {
-    console.log("Invalid ecl: ", person.ecl);
+    // console.log("Invalid ecl: ", person.ecl);
     return false;
   }
 
   if (!validatePassportId(person.pid)) {
-    console.log("Invalid pid: ", person.pid);
+    // console.log("Invalid pid: ", person.pid);
     return false;
   }
 
@@ -89,7 +89,7 @@ function validateYear(str, min, max) {
 
 function validateHeight(height) {
   var groups = height.match(/(\d+)(cm|in)/);
-  console.log(groups);
+  // console.log(groups);
 
   if (groups == null) {
     return false;
@@ -112,6 +112,6 @@ function validateEyeColour(eyes) {
   return validColours.includes(eyes);
 }
 
-function validatePassportId(pid){
-    return pid.length == 9 && pid.match(/\d{9}/)
+function validatePassportId(pid) {
+  return pid.length == 9 && pid.match(/\d{9}/);
 }
