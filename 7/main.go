@@ -53,15 +53,6 @@ func canContainBag(find string, count int, bags map[string]Bag) int {
 				return 1
 			}
 		}
-		// 	// for i := 0 ; <bag.
-
-		// 	// _, ok := element.Rules[find]
-		// 	// if ok {
-		// 	// 	count++
-		// 	// } else {
-
-		// 	// 	canContainBag(key, count, bags)
-		// 	// }
 	}
 
 	return count
