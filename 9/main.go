@@ -29,7 +29,7 @@ func main() {
 	Validate(intArray, 25)
 }
 
-func Validate(data []int, preambleLength int) bool {
+func Validate(data []int, preambleLength int) {
 	fmt.Println(data)
 	end := preambleLength
 
@@ -41,7 +41,7 @@ func Validate(data []int, preambleLength int) bool {
 
 		if !validatePreamble(window, data[end]) {
 			fmt.Printf("Not VALID: %d", data[end])
-			return false
+			return
 		}
 		fmt.Print(end)
 
@@ -49,7 +49,6 @@ func Validate(data []int, preambleLength int) bool {
 		fmt.Println()
 		end++
 	}
-	return true
 }
 
 func validatePreamble(data []int, nextVal int) bool {
