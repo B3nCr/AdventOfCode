@@ -72,25 +72,65 @@ func TestRemoveFrom3(t *testing.T) {
 	}
 }
 
-// func testRemoveFrom4(t *testing.T) {
-// 	testData := make([]Test, 0)
-// 	testData = append(testData, Test{[]int{0, 1, 2, 3}, []int{0, 2}})
-// 	testData = append(testData, Test{[]int{1, 2, 3}, []int{1, 3}})
+func TestRemoveFrom4(t *testing.T) {
+	testData := make([]Test, 0)
+	testData = append(testData, Test{[]int{0, 1, 2, 3}, make([][]int, 0)})
+	testData[0].Expected = append(testData[0].Expected, []int{0, 2, 3})
+	testData[0].Expected = append(testData[0].Expected, []int{0, 1, 3})
+	testData[0].Expected = append(testData[0].Expected, []int{0, 3})
 
-// 	for _, test := range testData {
-// 		actual := removeFrom3(test.Input)
+	for _, test := range testData {
+		actual := removeFrom4(test.Input)
 
-// 		if !equal(test.Expected, actual) {
-// 			t.Errorf("Expected %v, got %v", test.Expected, actual)
-// 		}
-// 	}
-// }
+		if !equal2d(test.Expected, actual) {
+			t.Errorf("Expected %v, got %v", test.Expected, actual)
+		}
+	}
+}
 
 func removeFrom3(data []int) []int {
+	// result := make([]int, 0)
 	if data[2]-data[0] <= 3 {
-		return append(data[:1], data[2:]...)
+		return []int{data[0], data[2]}
 	}
 	return data
+}
+
+func removeFrom4(data []int) [][]int {
+	result := make([][]int, 0)
+
+	if data[2]-data[0] <= 3 {
+		var firstThree []int
+		firstThree = append(firstThree, removeFrom3(data)...)
+		firstThree = append(firstThree, data[3])
+		result = append(result, firstThree) // append(result, append(data[:1], data[2:]...))
+	}
+
+	if data[3]-data[1] <= 3 {
+		var lastThree []int
+		lastThree = append(lastThree, data[0])
+		lastThree = append(lastThree, removeFrom3(data[1:])...)
+
+		result = append(result, lastThree)
+	}
+
+	if data[3]-data[0] <= 3 {
+		result = append(result, []int{data[0], data[3]})
+	}
+
+	return result
+}
+
+func equal2d(a, b [][]int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if !equal(a[i], b[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 func equal(a, b []int) bool {
