@@ -56,20 +56,18 @@ func TestRemoveFrom3(t *testing.T) {
 }
 
 func TestRemoveFrom4(t *testing.T) {
-	testData := make([]Test, 0)
-	testData = append(testData, Test{[]int{0, 1, 2, 3}, make([][]int, 0)})
-	testData[0].Expected = append(testData[0].Expected, []int{0, 1, 2, 3})
-	testData[0].Expected = append(testData[0].Expected, []int{0, 2, 3})
-	testData[0].Expected = append(testData[0].Expected, []int{0, 1, 3})
-	testData[0].Expected = append(testData[0].Expected, []int{0, 3})
+	expected := make(map[string][]int)
+	expected[arrayToString([]int{0, 1, 2, 3})] = []int{0, 1, 2, 3}
+	expected[arrayToString([]int{0, 2, 3})] = []int{0, 2, 3}
+	expected[arrayToString([]int{0, 1, 3})] = []int{0, 1, 3}
+	expected[arrayToString([]int{0, 3})] = []int{0, 3}
 
-	for _, test := range testData {
-		actual := removeFrom4(test.Input)
+	actual := removeFrom4([]int{0, 1, 2, 3})
 
-		if !equal2d(test.Expected, actual) {
-			t.Errorf("Expected %v, got %v", test.Expected, actual)
-		}
+	if !equal2d(mapOfIntTo2D(expected), actual) {
+		t.Errorf("Expected %v, got %v", expected, actual)
 	}
+
 }
 
 func TestLongerArray(t *testing.T) {
@@ -121,16 +119,13 @@ func removeFrom4(data []int) [][]int {
 		resultMap[arrayToString([]int{data[0], data[3]})] = []int{data[0], data[3]}
 	}
 
-	r1 := make([][]int, 0)
-	for _, thing1 := range resultMap {
-		r1 = append(r1, thing1)
-	}
+	r1 := mapOfIntTo2D(resultMap)
 	return r1
 }
 
 func removeFromN(data []int) [][]int {
 	result := make([][]int, 0)
-
+	resultMap := make(map[string][]int)
 	result = append(result, data)
 
 	for i := 0; i < len(data)-4; i++ {
@@ -142,10 +137,19 @@ func removeFromN(data []int) [][]int {
 			toAdd = append(toAdd, r...)
 			toAdd = append(toAdd, data[i+4:]...)
 			result = append(result, toAdd)
+			resultMap[arrayToString(toAdd)] = toAdd
 		}
 	}
 
 	return result
+}
+
+func mapOfIntTo2D(intMap map[string][]int) [][]int {
+	r1 := make([][]int, 0)
+	for _, thing1 := range intMap {
+		r1 = append(r1, thing1)
+	}
+	return r1
 }
 
 func equal2d(a, b [][]int) bool {
