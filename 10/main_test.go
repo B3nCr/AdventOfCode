@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strings"
 	"testing"
 )
 
@@ -96,13 +97,15 @@ func removeFrom3(data []int) []int {
 }
 
 func removeFrom4(data []int) [][]int {
-	result := make([][]int, 0)
-	result = append(result, data)
+	resultMap := make(map[string][]int)
+	resultMap[arrayToString(data)] = data
+
 	if data[2]-data[0] <= 3 {
 		var firstThree []int
 		firstThree = append(firstThree, removeFrom3(data)...)
 		firstThree = append(firstThree, data[3])
-		result = append(result, firstThree)
+
+		resultMap[arrayToString(firstThree)] = firstThree
 	}
 
 	if data[3]-data[1] <= 3 {
@@ -110,14 +113,19 @@ func removeFrom4(data []int) [][]int {
 		lastThree = append(lastThree, data[0])
 		lastThree = append(lastThree, removeFrom3(data[1:])...)
 
-		result = append(result, lastThree)
+		resultMap[arrayToString(lastThree)] = lastThree
 	}
 
 	if data[3]-data[0] <= 3 {
-		result = append(result, []int{data[0], data[3]})
+
+		resultMap[arrayToString([]int{data[0], data[3]})] = []int{data[0], data[3]}
 	}
 
-	return result
+	r1 := make([][]int, 0)
+	for _, thing1 := range resultMap {
+		r1 = append(r1, thing1)
+	}
+	return r1
 }
 
 func removeFromN(data []int) [][]int {
@@ -162,4 +170,11 @@ func equal(a, b []int) bool {
 		}
 	}
 	return true
+}
+
+func arrayToString(a []int) string {
+	delim := ","
+	return strings.Trim(strings.Replace(fmt.Sprint(a), " ", delim, -1), "[]")
+	//return strings.Trim(strings.Join(strings.Split(fmt.Sprint(a), " "), delim), "[]")
+	//return strings.Trim(strings.Join(strings.Fields(fmt.Sprint(a)), delim), "[]")
 }
