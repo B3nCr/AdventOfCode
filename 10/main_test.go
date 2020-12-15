@@ -27,7 +27,6 @@ func TestGetDiffs(t *testing.T) {
 	if !(oneDiffs == 7 && threeDiffs == 5) {
 		t.Error("test failure")
 	}
-
 }
 
 type Test struct {
@@ -45,6 +44,11 @@ func TestRemoveFrom3(t *testing.T) {
 	test2 := Test{[]int{0, 1, 4}, make([][]int, 0)}
 	test2.Expected = append(test2.Expected, []int{0, 1, 4})
 	testData = append(testData, test2)
+
+	// can't remove mid due to too large gap
+	test3 := Test{[]int{5, 6, 7}, make([][]int, 0)}
+	test3.Expected = append(test3.Expected, []int{5, 7})
+	testData = append(testData, test3)
 
 	for _, testCase := range testData {
 		actual := removeFrom3(testCase.Input)
@@ -65,15 +69,21 @@ func TestRemoveFrom4(t *testing.T) {
 	actual := removeFrom4([]int{0, 1, 2, 3})
 
 	if !equal2d(mapOfIntTo2D(expected), actual) {
-		t.Errorf("Expected %v, got %v", expected, actual)
+		t.Errorf("Expected %v, got %v", mapOfIntTo2D(expected), actual)
 	}
+}
 
+func TestRemoveFrom4Specific(t *testing.T) {
+	input := []int{9, 10, 11, 12, 15, 16, 19, 22}
+	actual := removeFromN(input)
+
+	t.Errorf("Result %v", actual)
 }
 
 func TestLongerArray(t *testing.T) {
 	input := []int{0, 1, 2, 3, 4, 5}
 	actual := removeFromN(input)
-	if len(actual) != 8 {
+	if len(actual) != 6 {
 		t.Errorf("Incorrect number of results %v", actual)
 	}
 }
@@ -81,6 +91,7 @@ func TestLongerArray(t *testing.T) {
 func TestFromSample(t *testing.T) {
 	input := []int{0, 16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4, 22}
 	sort.Ints(input)
+	fmt.Println(input)
 	actual := removeFromN(input)
 	if len(actual) != 8 {
 		t.Errorf("Incorrect number of results. No %d, Results %v", len(actual), actual)
@@ -96,6 +107,7 @@ func removeFrom3(data []int) []int {
 
 func removeFrom4(data []int) [][]int {
 	resultMap := make(map[string][]int)
+
 	resultMap[arrayToString(data)] = data
 
 	if data[2]-data[0] <= 3 {
@@ -124,9 +136,9 @@ func removeFrom4(data []int) [][]int {
 }
 
 func removeFromN(data []int) [][]int {
-	result := make([][]int, 0)
 	resultMap := make(map[string][]int)
-	result = append(result, data)
+
+	resultMap[arrayToString(data)] = data
 
 	for i := 0; i < len(data)-4; i++ {
 		window := data[i : i+4]
@@ -136,12 +148,12 @@ func removeFromN(data []int) [][]int {
 			toAdd = append(toAdd, data[:i]...)
 			toAdd = append(toAdd, r...)
 			toAdd = append(toAdd, data[i+4:]...)
-			result = append(result, toAdd)
+
 			resultMap[arrayToString(toAdd)] = toAdd
 		}
 	}
 
-	return result
+	return mapOfIntTo2D(resultMap)
 }
 
 func mapOfIntTo2D(intMap map[string][]int) [][]int {
