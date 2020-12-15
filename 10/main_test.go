@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 )
 
@@ -27,25 +28,6 @@ func TestGetDiffs(t *testing.T) {
 	}
 
 }
-
-// func TestRemoveSkipable(t *testing.T) {
-// 	testData := []int{16,
-// 		10,
-// 		15,
-// 		5,
-// 		1,
-// 		11,
-// 		7,
-// 		19,
-// 		6,
-// 		12,
-// 		4}
-// 	removed := removeSkipable(testData)
-
-// 	if !equal(removed[0], []int{0, 2, 3}) {
-// 		t.Error(removed)
-// 	}
-// }
 
 type Test struct {
 	Input    []int
@@ -75,6 +57,7 @@ func TestRemoveFrom3(t *testing.T) {
 func TestRemoveFrom4(t *testing.T) {
 	testData := make([]Test, 0)
 	testData = append(testData, Test{[]int{0, 1, 2, 3}, make([][]int, 0)})
+	testData[0].Expected = append(testData[0].Expected, []int{0, 1, 2, 3})
 	testData[0].Expected = append(testData[0].Expected, []int{0, 2, 3})
 	testData[0].Expected = append(testData[0].Expected, []int{0, 1, 3})
 	testData[0].Expected = append(testData[0].Expected, []int{0, 3})
@@ -88,8 +71,24 @@ func TestRemoveFrom4(t *testing.T) {
 	}
 }
 
+func TestLongerArray(t *testing.T) {
+	input := []int{0, 1, 2, 3, 4, 5}
+	actual := removeFromN(input)
+	if len(actual) != 8 {
+		t.Errorf("Incorrect number of results %v", actual)
+	}
+}
+
+func TestFromSample(t *testing.T) {
+	input := []int{0, 16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4, 22}
+	sort.Ints(input)
+	actual := removeFromN(input)
+	if len(actual) != 8 {
+		t.Errorf("Incorrect number of results. No %d, Results %v", len(actual), actual)
+	}
+}
+
 func removeFrom3(data []int) []int {
-	// result := make([]int, 0)
 	if data[2]-data[0] <= 3 {
 		return []int{data[0], data[2]}
 	}
@@ -98,12 +97,12 @@ func removeFrom3(data []int) []int {
 
 func removeFrom4(data []int) [][]int {
 	result := make([][]int, 0)
-
+	result = append(result, data)
 	if data[2]-data[0] <= 3 {
 		var firstThree []int
 		firstThree = append(firstThree, removeFrom3(data)...)
 		firstThree = append(firstThree, data[3])
-		result = append(result, firstThree) // append(result, append(data[:1], data[2:]...))
+		result = append(result, firstThree)
 	}
 
 	if data[3]-data[1] <= 3 {
@@ -116,6 +115,26 @@ func removeFrom4(data []int) [][]int {
 
 	if data[3]-data[0] <= 3 {
 		result = append(result, []int{data[0], data[3]})
+	}
+
+	return result
+}
+
+func removeFromN(data []int) [][]int {
+	result := make([][]int, 0)
+
+	result = append(result, data)
+
+	for i := 0; i < len(data)-4; i++ {
+		window := data[i : i+4]
+		windowResults := removeFrom4(window)
+		for _, r := range windowResults {
+			toAdd := make([]int, 0)
+			toAdd = append(toAdd, data[:i]...)
+			toAdd = append(toAdd, r...)
+			toAdd = append(toAdd, data[i+4:]...)
+			result = append(result, toAdd)
+		}
 	}
 
 	return result
