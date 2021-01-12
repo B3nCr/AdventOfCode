@@ -36,6 +36,9 @@ func main() {
 	sort.Ints(sliced)
 	fmt.Println(sliced)
 
+	z := removeFromN(intArray)
+	fmt.Println(len(z))
+
 }
 
 func FindSequence(data []int, index int, sum int) (int, int) {
