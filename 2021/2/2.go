@@ -9,12 +9,6 @@ import (
 	"strings"
 )
 
-// const (
-// 	forward = "foward"
-// 	up      = "up"
-// 	down    = "down"
-// )
-
 type instruction struct {
 	direction string
 	distance  int
