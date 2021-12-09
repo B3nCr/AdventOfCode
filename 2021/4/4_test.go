@@ -21,18 +21,42 @@ type Board struct {
 }
 
 func TestReadInput(t *testing.T) {
-	b, _ := ioutil.ReadFile("./test_input.txt")
+	b, _ := ioutil.ReadFile("./input.txt")
 
-	_, boards := ReadInput(strings.NewReader(string(b)))
+	draw, boards := ReadInput(strings.NewReader(string(b)))
 
 	if len(boards) != 3 {
 		t.Errorf("%d", len(boards))
 	}
 
 	fmt.Print(boards)
+
+	earliestWin := 999999
+	earliestWinningBoard := 0
+	earliestWinningScore := 0
+	latestWin := 0
+	latestWinningBoard := 0
+	latestWinningScore := 0
+	for i, layout := range boards {
+		board := Board{Layout: layout}
+		board = board.CalcResult(draw)
+		if board.HasWon && board.Round < earliestWin {
+			earliestWin = board.Round
+			earliestWinningBoard = i
+			earliestWinningScore = board.Score
+		}
+		if board.HasWon && board.Round > latestWin {
+			latestWin = board.Round
+			latestWinningBoard = i
+			latestWinningScore = board.Score
+		}
+	}
+
+	fmt.Printf("Board %d wins on round %d with score %d\n", earliestWinningBoard, earliestWin, earliestWinningScore)
+	fmt.Printf("Board %d wins on round %d with score %d\n", latestWinningBoard, latestWin, latestWinningScore)
 }
 
-func (b Board) GetResult(draw []int) Board {
+func (b Board) CalcResult(draw []int) Board {
 	for round, pick := range draw {
 		found := false
 		for row := range b.Layout { // replace with range
