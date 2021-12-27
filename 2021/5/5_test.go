@@ -41,7 +41,7 @@ func TestImport(t *testing.T) {
 	fmt.Println()
 	points := 0
 	for _, line := range oceanFloor {
-		fmt.Println(line)
+		// fmt.Println(line)
 		for _, cell := range line {
 			if cell >= 2 {
 				points++
