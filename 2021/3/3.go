@@ -76,6 +76,7 @@ func InvertArray(array []int) []int {
 	}
 	return result
 }
+
 func Equal(a, b []int) bool {
 	if len(a) != len(b) {
 		return false
