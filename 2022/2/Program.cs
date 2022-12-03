@@ -9,7 +9,10 @@ for(var i = 0 ; i<input.Length ; i++){
     // Console.WriteLine(Game.Parse(player2));
 
     var game = new Game(input[i][0], input[i][2]);
-    Console.WriteLine(game.Score());
+    
+    Console.WriteLine(game.Player1);
+    Console.WriteLine(game.Player2);
+  
     score += game.Score();
 }
 
