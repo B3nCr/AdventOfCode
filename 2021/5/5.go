@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strconv"
 	"strings"
@@ -71,6 +72,45 @@ type LineSegment struct {
 	end   Point
 }
 
+type YDirection int8
+type XDirection int8
+
+const (
+	Up YDirection = iota
+	Down
+)
+const (
+	Left XDirection = iota
+	Right
+)
+
+type Direction struct {
+	YDirection
+	XDirection
+}
+
+func (l LineSegment) Direction() Direction {
+	res := Direction{}
+	if l.start.y < l.end.y {
+		res.YDirection = Up
+	} else {
+		res.YDirection = Down
+	}
+	if l.start.x < l.end.x {
+		res.XDirection = Right
+	} else {
+		res.XDirection = Left
+	}
+	return res
+	// res.XDirection
+	// res.YDirection
+	// minY := Min(v.start.y, v.end.y)
+	// maxY := Max(v.start.y, v.end.y)
+
+	// minX := Min(v.start.x, v.end.x)
+	// maxX := Max(v.start.x, v.end.x)
+}
+
 func (l LineSegment) IsDiagonal() bool {
 	return !(l.start.x == l.end.x || l.start.y == l.end.y)
 }
@@ -100,6 +140,13 @@ func Max(a, b int) int {
 }
 
 func (v LineSegment) GetAllMidpoints() []Point {
+	isDiagonal := v.IsDiagonal()
+
+	if isDiagonal {
+		fmt.Printf("Is Diagonal %v", isDiagonal)
+
+	}
+
 	vertical := v.start.y == v.end.y
 
 	if !vertical {

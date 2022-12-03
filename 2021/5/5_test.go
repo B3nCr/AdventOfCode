@@ -22,7 +22,7 @@ func TestImport(t *testing.T) {
 	b, _ := ioutil.ReadFile("./input.txt")
 
 	vents := GetVents(strings.NewReader(string(b)))
-	fmt.Println(vents)
+	// fmt.Println(vents)
 	oceanFloor := MakeFloor(vents)
 
 	for _, line := range vents {
@@ -31,7 +31,7 @@ func TestImport(t *testing.T) {
 		}
 		points := line.GetAllMidpoints()
 
-		fmt.Println(points)
+		// fmt.Println(points)
 
 		for _, point := range points {
 			oceanFloor[point.y][point.x]++
@@ -49,7 +49,6 @@ func TestImport(t *testing.T) {
 		}
 	}
 	fmt.Printf("Points: %d\n", points)
-
 }
 
 func PrintAllPoints(t *testing.T) {
@@ -80,8 +79,6 @@ func TestGetAllMidpoints(t *testing.T) {
 	v := GetLineSegment("0,0 -> 0,4")
 
 	points := v.GetAllMidpoints()
-
-	// fmt.Println(points)
 
 	if len(points) != 5 {
 		t.Errorf("Should be 4 points. Got %d", len(points))
@@ -128,5 +125,17 @@ func TestGetMidpoint(t *testing.T) {
 
 	if midpoint.x != 0 && midpoint.y != 0 {
 		t.Errorf("Incorrect Midpoint %v", midpoint)
+	}
+}
+
+func TestGetDiagonalPoints(t *testing.T) {
+	v := GetLineSegment("0,0 -> 4,4")
+
+	points := v.GetAllMidpoints()
+
+	fmt.Println(points)
+
+	if len(points) != 5 {
+		t.Errorf("Should be 4 points. Got %d", len(points))
 	}
 }
