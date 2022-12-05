@@ -3,14 +3,15 @@ using System.Text.RegularExpressions;
 
 public class Instruction
 {
+    static Regex regex = new Regex("move (\\d+) from (\\d+) to (\\d+)", RegexOptions.Compiled);
     public int Count { get; }
     public int From { get; }
     public int To { get; }
 
     public Instruction(string instruction)
     {
-        var regex = new Regex("move (\\d+) from (\\d+) to (\\d+)");
         var result = regex.Match(instruction);
+
         Count = int.Parse(result.Groups[1].Value);
         From = int.Parse(result.Groups[2].Value);
         To = int.Parse(result.Groups[3].Value);
@@ -21,7 +22,7 @@ public class Instruction
     }
 }
 
-public class Crate 
+public class Crate
 {
     public Crate(string crate)
     {
