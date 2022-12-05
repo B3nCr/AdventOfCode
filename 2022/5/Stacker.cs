@@ -1,3 +1,4 @@
+using System.Reflection;
 using BenchmarkDotNet.Attributes;
 
 public class Stacker
@@ -6,7 +7,7 @@ public class Stacker
     [Benchmark]
     public void MoveStuff()
     {
-        var input = File.ReadAllLines("input.txt");
+        var input = GetInputFromFile("input.txt").Split(Environment.NewLine);
 
         var currentMode = Mode.instructions;
 
@@ -88,5 +89,15 @@ public class Stacker
         {
             Console.Write(stack.Peek());
         }
+    }
+
+    public static string GetInputFromFile(string filename)
+    {
+        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"_5.{filename}");
+        using var streamReader = new StreamReader(stream);
+
+        var contents = streamReader.ReadToEnd();
+
+        return contents;
     }
 }
