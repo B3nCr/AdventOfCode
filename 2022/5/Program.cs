@@ -67,10 +67,17 @@ foreach (var stack in stacks)
 
 foreach (var instruction in instructions)
 {
+    var miniStack = new Stack<char>();
+
     for (int i = 0; i < instruction.Count; i++)
     {
         var crate = stacks[instruction.From - 1].Pop();
-        stacks[instruction.To - 1].Push(crate);
+        miniStack.Push(crate);
+    }
+
+    while (miniStack.Any())
+    {
+        stacks[instruction.To - 1].Push(miniStack.Pop());
     }
 }
 
