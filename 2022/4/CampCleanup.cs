@@ -22,6 +22,9 @@ public class WorkDuty
         b.Append($"{FirstSection.ToStringWithLimit(limit)}\n{SecondSection.ToStringWithLimit(limit)}");
         b.AppendLine();
         b.Append($"Contained: {ContainsContainedSection()}");
+        b.AppendLine();
+        b.Append($"Overlaps: {ContainsOverlap()}");
+        b.AppendLine();
 
         return b.ToString();
     }
@@ -38,6 +41,20 @@ public class WorkDuty
         }
         return false;
     }
+
+    public bool ContainsOverlap()
+    {
+        if (FirstSection.Start <= SecondSection.Start && FirstSection.End >= SecondSection.Start)
+        {
+            return true;
+        }
+        if (SecondSection.Start <= FirstSection.Start && SecondSection.End >= FirstSection.Start)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 public class Section

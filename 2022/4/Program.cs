@@ -2,16 +2,21 @@
 
 var input = File.ReadAllLines("input.txt");
 
-var count = 0;
+var containedCount = 0;
+var overlapdCount = 0;
 for(int i = 0; i < input.Length; i++)
 {
     var cleanupDuty = new WorkDuty(input[i]);
     if (cleanupDuty.ContainsContainedSection())
     {
-        count++;
+        containedCount++;
+    }
+    if (cleanupDuty.ContainsOverlap())
+    {
+        overlapdCount++;
     }
     Console.WriteLine(cleanupDuty);
 }
 
-Console.WriteLine(count);
+Console.WriteLine($"Contained: {containedCount}\nOverlap: {overlapdCount}");
 
