@@ -3,7 +3,6 @@ using BenchmarkDotNet.Attributes;
 
 public class Stacker
 {
-
     [Benchmark]
     public void MoveStuff()
     {
@@ -37,7 +36,6 @@ public class Stacker
                     .Select(int.Parse)
                     .Max();
 
-                // Console.WriteLine(columnCount);
 
                 currentMode = Mode.columns;
 
@@ -52,17 +50,12 @@ public class Stacker
 
             if (currentMode == Mode.columns)
             {
-                // Console.WriteLine("Reading stacks");
                 var columns = input[i];
-
-                // Console.WriteLine(columns);
 
                 for (int c = 0; c < columnCount; c++)
                 {
                     var character = columns.ToCharArray()[c * 4 + 1];
                     if (character == ' ') continue;
-
-                    // Console.WriteLine(character);
 
                     stacks[c].Push(character);
                 }
