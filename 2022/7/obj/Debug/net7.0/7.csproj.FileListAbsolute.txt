@@ -1,0 +1,17 @@
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.csproj.AssemblyReference.cache
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.GeneratedMSBuildEditorConfig.editorconfig
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.AssemblyInfoInputs.cache
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.AssemblyInfo.cs
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.csproj.CoreCompileInputs.cache
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/7
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/7.deps.json
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/7.runtimeconfig.json
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/7.dll
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/7.pdb
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.dll
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/refint/7.dll
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.pdb
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/7.genruntimeconfig.cache
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/obj/Debug/net7.0/ref/7.dll
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/small-input.txt
+/Users/benjamin.crinion/Dev/advent-of-code/2022/7/bin/Debug/net7.0/input.txt
