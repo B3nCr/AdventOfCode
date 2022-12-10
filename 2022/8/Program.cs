@@ -1,4 +1,6 @@
-﻿var lines = File.ReadAllLines("small-input.txt");
+﻿var lines = File.ReadAllLines("input.txt");
 
-var visibleTrees = 0;
-new Forest(lines).CountVisibleTress();
+//var visibleTrees = 0;
+
+Console.WriteLine(new Forest(lines).GetSenicScore());
+
