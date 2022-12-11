@@ -17,6 +17,18 @@ public class UnitTest1
         var lines = File.ReadAllLines("input.txt");
         var intervals = new HashSet<int>(new[] { 20, 60, 100, 140, 180, 220 });
 
+        char[,] crt = new char[6, 40];
+
+        for (int x = 0; x < crt.GetLength(0); x += 1)
+        {
+            for (int y = 0; y < crt.GetLength(1); y += 1)
+            {
+                crt[x, y] = '.';
+            }
+        }
+
+        Crt.Render(crt);
+
         int clock = 1;
         int register = 1;
         int instructionPointer = 0;
@@ -82,5 +94,22 @@ public class UnitTest1
         }
 
         _testOutputHelper.WriteLine($"Sum {sum}");
+    }
+
+
+}
+
+public class Crt
+{
+    public static void Render(char[,] crt)
+    {
+        for (int x = 0; x < crt.GetLength(0); x += 1)
+        {
+            for (int y = 0; y < crt.GetLength(1); y += 1)
+            {
+                Console.Write(crt[x, y]);
+            }
+            Console.WriteLine();
+        }
     }
 }
