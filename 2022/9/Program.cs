@@ -10,8 +10,6 @@ foreach (var line in lines)
 
     i++;
 
-    rope.Draw();
-
     Console.WriteLine();
 }
 
