@@ -17,7 +17,7 @@ public class UnitTest1
         var lines = File.ReadAllLines("input.txt");
         var intervals = new HashSet<int>(new[] { 20, 60, 100, 140, 180, 220 });
 
-        int clock = 0;
+        int clock = 1;
         int register = 1;
         int instructionPointer = 0;
 
