@@ -58,7 +58,7 @@ public class Point
         X = to.X; Y = to.Y;
     }
 
-    public int GetDistance(Point to)
+    public int GetDistanceTo(Point to)
     {
         var horizontalDistnace = (to.X - X);
         var verticalDistance = (to.Y - Y);
@@ -97,25 +97,21 @@ public class Point
 
 public class Rope
 {
-    public Point Head
+    public Rope()
     {
-        get;
-        private set;
-    } = new Point();
+        for (int i = 0; i < 10; i++)
+        {
+            Points.Add(new Point());
+        }
+    }
 
-    public Point Tail
-    {
-        get;
-        private set;
-    } = new Point();
+    public List<Point> Points { get; private set; } = new List<Point>();
 
     public HashSet<Point> TailPositions
     {
         get;
         private set;
     } = new HashSet<Point>();
-
-
 
     public void Move(string move)
     {
@@ -124,18 +120,40 @@ public class Rope
 
         for (int i = 0; i < distance; i++)
         {
-            Head.Move(direction);
-            var gap = Head.GetDistance(Tail);
+            Points[0].Move(direction);
 
-            Console.Write($"Head Position: {Head} ");
+            Console.WriteLine($"Head moved: {Points[0]}");
 
-            if (gap > 1)
+            for (int t = 1; t < Points.Count; t++)
             {
-                //Console.WriteLine("Too far mate");
-                Tail.MoveTo(Head.PreviousPosition);
-                TailPositions.Add(new Point(Tail.X, Tail.Y));
-                Console.WriteLine($"Tail Position: {Tail}");
+                var gap = Points[t].GetDistanceTo(Points[t - 1]);
+                if (gap > 1)
+                {
+                    Points[t].MoveTo(Points[t-1].PreviousPosition);
+                    if (t == 9)
+                    {
+                        TailPositions.Add(new Point(Points[t].X, Points[t].Y));
+                    }
+                    Console.WriteLine($"Tail {t} Moved: {Points[t]}");
+                }
+                else
+                {
+                    Console.WriteLine("No more tail moves");
+                    break;
+                }
             }
+
+            //if (gap > 9)
+            //{
+            //    Console.WriteLine("too large distance");
+            //    //Tail.MoveTo(Head.PreviousPosition);
+
+            //    //TailPositions.Add(new Point(Tail.X, Tail.Y));
+
+            //    //Console.WriteLine($"Tail Position: {Tail}");
+            //}
         }
+
+        Console.WriteLine();
     }
 }

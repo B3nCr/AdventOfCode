@@ -1,10 +1,14 @@
 ﻿var lines = File.ReadAllLines("small-input.txt");
 
 var rope = new Rope();
-
+var i = 1;
 foreach (var line in lines)
 {
+    Console.WriteLine($"Move {i} {line}");
+
     rope.Move(line);
+
+    i++;
 }
 
 Console.WriteLine(rope.TailPositions.Count());
