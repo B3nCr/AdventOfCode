@@ -129,7 +129,7 @@ public class Rope
                 var gap = Points[t].GetDistanceTo(Points[t - 1]);
                 if (gap > 1)
                 {
-                    Points[t].MoveTo(Points[t-1].PreviousPosition);
+                    Points[t].MoveTo(Points[t - 1].PreviousPosition);
                     if (t == 9)
                     {
                         TailPositions.Add(new Point(Points[t].X, Points[t].Y));
@@ -154,6 +154,44 @@ public class Rope
             //}
         }
 
+        Console.WriteLine();
+    }
+
+    public void Draw()
+    {
+        var maxx = Points.Max(x => x.X);
+        var minx = Points.Min(x => x.X);
+        var maxy = Points.Max(x => x.Y);
+        var miny = Points.Min(x => x.Y);
+
+        Console.WriteLine($"{minx}:{maxx}:{miny}:{maxy}");
+
+        char[,] grid = new char[maxy - miny+1, maxx - minx+1];
+
+        for (int y = miny; y <= maxy; y++)
+        {
+            for (int x = minx; x < maxx; x++)
+            {
+                grid[y, x] = '.';
+            }
+        }
+
+        for(int i = 0;i < Points.Count;i++)
+        {
+            var point = Points[i];
+            grid[point.Y, point.X] = i.ToString()[0];
+        }
+
+        for (int y = miny; y <= maxy; y++)
+        {
+            for (int x = minx; x < maxx; x++)
+            {
+                Console.Write(grid[y, x]);
+            }
+            Console.WriteLine();
+        }
+
+        Console.WriteLine();
         Console.WriteLine();
     }
 }

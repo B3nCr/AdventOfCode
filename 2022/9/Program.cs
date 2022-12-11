@@ -9,6 +9,10 @@ foreach (var line in lines)
     rope.Move(line);
 
     i++;
+
+    rope.Draw();
+
+    Console.WriteLine();
 }
 
 Console.WriteLine(rope.TailPositions.Count());
