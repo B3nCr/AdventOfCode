@@ -1,7 +1,7 @@
 ﻿
 using _11;
 
-var lines = File.ReadAllLines("small-input.txt");
+var lines = File.ReadAllLines("input.txt");
 
 var monkeys = new List<Monkey>();
 for (int i = 0; i < lines.Length; i += 7)
@@ -16,7 +16,7 @@ foreach (var monkey in monkeys)
 
 Console.WriteLine();
 
-var counts = new List<int>() { 0, 0, 0, 0, 0, 0 };
+var counts = new List<ulong>() { 0, 0, 0, 0, 0, 0 };
 for (int i = 0; i < 10000; i++)
 {
     foreach (var monkey in monkeys)
@@ -25,7 +25,9 @@ for (int i = 0; i < 10000; i++)
 
         foreach (var item in monkey.InspectItems())
         {
-            monkeys[item.Item1].Items.Add(item.Item2);
+            var pass = item.Item2 % (monkeys.Select(x => x.Divisor).Aggregate<ulong>((x, y) => x * y));
+
+            monkeys[item.Item1].Items.Add(pass);
         }
 
         //Console.WriteLine($"Monkey {monkey.Index} Count {string.Join(',', monkey.Items)}");
@@ -48,6 +50,8 @@ foreach (var monkey in sortedRes)
 
 Console.WriteLine(sortedRes.ElementAt(0).Inspected * sortedRes.ElementAt(1).Inspected);
 
+//Console.WriteLine($"{3 * 4 * 5 * 6}");
 
+//Console.WriteLine($"{new[] { 4 * 3 * 5 * 6 }.Aggregate((x, y) => x * y)}");
 
 

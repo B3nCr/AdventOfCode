@@ -61,13 +61,13 @@ public class Monkey
 
     public Operation Op { get; private set; }
 
-    private uint Multiplier;
+    private ulong Multiplier;
     public List<ulong> Items = new List<ulong>();
 
-    private uint Divisor { get; }
+    public ulong Divisor { get; }
     private int IfTrue { get; }
     private int IfFalse { get; }
-    public int Inspected { get; private set; }
+    public ulong Inspected { get; private set; }
 
     Dictionary<Operation, Func<ulong, ulong, ulong, ulong>> operations = new Dictionary<Operation, Func<ulong, ulong, ulong, ulong>>
     {
@@ -91,11 +91,11 @@ public class Monkey
         else
         {
             Op = monkey[2].Contains('*') ? Operation.Multiply : Operation.Plus;
-            Multiplier = uint.Parse(monkey[2].Substring(24));
+            Multiplier = ulong.Parse(monkey[2].Substring(24));
         }
 
 
-        Divisor = uint.Parse(monkey[3].Substring(21));
+        Divisor = ulong.Parse(monkey[3].Substring(21));
         IfTrue = int.Parse(monkey[4].Substring(28));
         IfFalse = int.Parse(monkey[5].Substring(29)); ;
     }
@@ -108,7 +108,7 @@ public class Monkey
 
     public IEnumerable<(int monkeyIndex, ulong result)> InspectItems()
     {
-        Inspected += Items.Count;
+        Inspected += (uint)Items.Count;
 
         for (var i = 0; i < Items.Count; i++)
         {
