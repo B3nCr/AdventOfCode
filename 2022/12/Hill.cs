@@ -7,12 +7,37 @@ public class Hill
     private bool[,] visited;
     private int[,] distance;
 
-    private (int x, int y) StartPosition;
-    private (int x, int y) EndPosition;
+    private readonly (int x, int y) StartPosition;
+    private readonly (int x, int y) EndPosition;
+
+    private readonly List<(int x, int y)> lowestPoints = new List<(int x, int y)>();
+    private readonly string[] lines;
 
     public Hill(string[] lines)
     {
+        this.lines = lines;
         hill = new char[lines.Length, lines[0].Length];
+
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            for (int x = 0; x < lines[0].Length; x++)
+            {
+                if (lines[i][x] == 'S') StartPosition = (x, i);
+
+                if (lines[i][x] == 'E') EndPosition = (x, i);
+
+                if (lines[i][x] == 'a') lowestPoints.Add((x, i));
+
+                hill[i, x] = lines[i][x];
+            }
+        }
+
+        Init(StartPosition);
+    }
+
+    private void Init((int x, int y) startPoint)
+    {
         visited = new bool[lines.Length, lines[0].Length];
         distance = new int[lines.Length, lines[0].Length];
 
@@ -20,32 +45,30 @@ public class Hill
         {
             for (int x = 0; x < lines[0].Length; x++)
             {
-                if (lines[i][x] == 'S')
-                {
-                    StartPosition = (x, i);
-                    distance[i, x] = 0;
-                }
-                else
-                {
-                    distance[i, x] = int.MaxValue;
-                }
-
-                if (lines[i][x] == 'E') EndPosition = (x, i);
-
-                hill[i, x] = lines[i][x];
-                Console.Write(lines[i][x]);
+                distance[i, x] = int.MaxValue;
             }
-            Console.WriteLine();
-
         }
 
-        Console.WriteLine(StartPosition);
+        distance[startPoint.y, startPoint.x] = 0;
+
         Console.WriteLine(EndPosition);
     }
 
-    internal int ShortestRoute()
+    public int ShortestRoute()
     {
         return ShortestRoute(StartPosition);
+    }
+
+    public IEnumerable<int> ShortestRouteFromLowPoints()
+    {
+        Console.WriteLine("All low pooints");
+
+        foreach (var point in lowestPoints)
+        {
+            Init(point);
+            Console.WriteLine(point);
+            yield return ShortestRoute(point);
+        }
     }
 
     internal int ShortestRoute((int x, int y) startPosition)
@@ -73,7 +96,7 @@ public class Hill
 
                 if (hill[currentPosition.y, currentPosition.x] == 'z' && neighbourCoords == EndPosition)
                 {
-                    PrintDistances();
+                    //PrintDistances();
 
                     Console.WriteLine("Found the end");
                     return newDistance;
@@ -89,16 +112,18 @@ public class Hill
 
             if (nextNodes.Count == 0)
             {
-                PrintDistances();
-                PrintNeighbours(currentPosition);
+                return int.MaxValue;
 
-                Console.WriteLine($"Stuck node {currentPosition}");
-                foreach (var v in GetVisitableNeighbours(currentPosition))
-                {
-                    Console.WriteLine(v);
-                }
+                ////PrintDistances();
+                //PrintNeighbours(currentPosition);
 
-                return -2;
+                //Console.WriteLine($"Stuck node {currentPosition}");
+                //foreach (var v in GetVisitableNeighbours(currentPosition))
+                //{
+                //    Console.WriteLine(v);
+                //}
+
+                //return -2;
             }
 
             //When we are done considering all of the unvisited neighbors of the current node, mark
