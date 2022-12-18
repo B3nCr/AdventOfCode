@@ -56,16 +56,10 @@ public class Hill
 
         while (CurrentPosition != EndPosition)
         {
-
-            //Console.WriteLine($"Current Pos: {CurrentPosition}");
-
             foreach (var neighbourCoords in GetVisitableNeighbours())
             {
-                //Console.WriteLine($"Neighbour {neighbourCoords}");
                 if (visited[neighbourCoords.y, neighbourCoords.x])
                 {
-                    //Console.WriteLine($"Visited {neighbourCoords}");
-
                     continue;
                 }
 
@@ -84,8 +78,7 @@ public class Hill
                     distance[neighbourCoords.y, neighbourCoords.x] = newDistance;
                 }
 
-                //distance[neigbourCoords.y, neigbourCoords.x] = distance[CurrentPosition.y, CurrentPosition.x] + 1;
-                nextNodes[neighbourCoords] = distance[neighbourCoords.y, neighbourCoords.x];//] = distance[neighbourCoords.y, neighbourCoords.x];
+                nextNodes[neighbourCoords] = distance[neighbourCoords.y, neighbourCoords.x];
             }
 
             if (nextNodes.Count == 0)
@@ -121,21 +114,6 @@ public class Hill
                 return distance[CurrentPosition.y, CurrentPosition.x];
             }
 
-            //Otherwise, select the unvisited node that is marked with the smallest tentative distance,
-            //set it as the new current node, and go back to step 3.
-            /*
-            (int x, int y) minPos = (-1, -1);
-            int minDist = -1;
-            foreach (var position in nextNodes.ke)
-            {
-                if (visited[position.y, position.x]) continue;
-
-                if (minDist == -1 || distance[position.y, position.x] < minDist)
-                {
-                    minPos = position;
-                }
-            }*/
-
             var closestNextNode = nextNodes.MinBy(x => x.Value) ;
 
             CurrentPosition = closestNextNode.Key;
@@ -165,9 +143,7 @@ public class Hill
 
     private bool IsEnd((int x, int y) p) => hill[p.y, p.x] == 'E';
 
-
     private bool IsStart((int x, int y) p) => hill[p.y, p.x] == 'S';
-
 
     private IEnumerable<(int x, int y)> GetNeighbours()
     {
