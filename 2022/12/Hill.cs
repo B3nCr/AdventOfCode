@@ -7,7 +7,7 @@ public class Hill
     private bool[,] visited;
     private int[,] distance;
 
-    private (int x, int y) CurrentPosition;
+    private (int x, int y) StartPosition;
     private (int x, int y) EndPosition;
 
     public Hill(string[] lines)
@@ -22,7 +22,7 @@ public class Hill
             {
                 if (lines[i][x] == 'S')
                 {
-                    CurrentPosition = (x, i);
+                    StartPosition = (x, i);
                     distance[i, x] = 0;
                 }
                 else
@@ -39,12 +39,18 @@ public class Hill
 
         }
 
-        Console.WriteLine(CurrentPosition);
+        Console.WriteLine(StartPosition);
         Console.WriteLine(EndPosition);
     }
 
     internal int ShortestRoute()
     {
+        return ShortestRoute(StartPosition);
+    }
+
+    internal int ShortestRoute((int x, int y) startPosition)
+    {
+        var currentPosition = startPosition;
         //For the current node, consider all of its unvisited neighbors and calculate their
         //tentative distances through the current node. Compare the newly calculated tentative
         //distance to the one currently assigned to the neighbor and assign it the smaller one.
@@ -54,18 +60,18 @@ public class Hill
         //to 8.Otherwise, the current value will be kept.
         Dictionary<(int, int), int> nextNodes = new Dictionary<(int, int), int>();
 
-        while (CurrentPosition != EndPosition)
+        while (currentPosition != EndPosition)
         {
-            foreach (var neighbourCoords in GetVisitableNeighbours())
+            foreach (var neighbourCoords in GetVisitableNeighbours(currentPosition))
             {
                 if (visited[neighbourCoords.y, neighbourCoords.x])
                 {
                     continue;
                 }
 
-                var newDistance = distance[CurrentPosition.y, CurrentPosition.x] + 1;
+                var newDistance = distance[currentPosition.y, currentPosition.x] + 1;
 
-                if (hill[CurrentPosition.y, CurrentPosition.x] == 'z' && neighbourCoords == EndPosition)
+                if (hill[currentPosition.y, currentPosition.x] == 'z' && neighbourCoords == EndPosition)
                 {
                     PrintDistances();
 
@@ -84,10 +90,10 @@ public class Hill
             if (nextNodes.Count == 0)
             {
                 PrintDistances();
-                PrintNeighbours(CurrentPosition);
+                PrintNeighbours(currentPosition);
 
-                Console.WriteLine($"Stuck node {CurrentPosition}");
-                foreach (var v in GetVisitableNeighbours())
+                Console.WriteLine($"Stuck node {currentPosition}");
+                foreach (var v in GetVisitableNeighbours(currentPosition))
                 {
                     Console.WriteLine(v);
                 }
@@ -101,22 +107,22 @@ public class Hill
             //step 6.: that the next nodes to visit will always be in the order of 'smallest distance
             //from initial node first' so any visits after would have a greater distance).
 
-            visited[CurrentPosition.y, CurrentPosition.x] = true;
+            visited[currentPosition.y, currentPosition.x] = true;
 
             //If the destination node has been marked visited(when planning a route between two specific
             //nodes) or if the smallest tentative distance among the nodes in the unvisited set is
             //infinity(when planning a complete traversal; occurs when there is no connection between
             //the initial node and remaining unvisited nodes), then stop. The algorithm has finished.
 
-            if (CurrentPosition.x == EndPosition.x && CurrentPosition.y == EndPosition.y)
+            if (currentPosition.x == EndPosition.x && currentPosition.y == EndPosition.y)
             {
                 Console.WriteLine("found that end");
-                return distance[CurrentPosition.y, CurrentPosition.x];
+                return distance[currentPosition.y, currentPosition.x];
             }
 
-            var closestNextNode = nextNodes.MinBy(x => x.Value) ;
+            var closestNextNode = nextNodes.MinBy(x => x.Value);
 
-            CurrentPosition = closestNextNode.Key;
+            currentPosition = closestNextNode.Key;
 
             nextNodes.Remove(closestNextNode.Key);
         }
@@ -125,9 +131,9 @@ public class Hill
         return -1;
     }
 
-    private IEnumerable<(int x, int y)> GetVisitableNeighbours()
+    private IEnumerable<(int x, int y)> GetVisitableNeighbours((int x, int y) CurrentPosition)
     {
-        foreach (var n in GetNeighbours())
+        foreach (var n in GetNeighbours(CurrentPosition))
         {
             if (IsEnd(n) && hill[CurrentPosition.y, CurrentPosition.x] != 'z')
             {
@@ -145,12 +151,12 @@ public class Hill
 
     private bool IsStart((int x, int y) p) => hill[p.y, p.x] == 'S';
 
-    private IEnumerable<(int x, int y)> GetNeighbours()
+    private IEnumerable<(int x, int y)> GetNeighbours((int x, int y) CurrentPosition)
     {
-        if (Up != null) yield return Up.Value;
-        if (Down != null) yield return Down.Value;
-        if (Left != null) yield return Left.Value;
-        if (Right != null) yield return Right.Value;
+        if (Up(CurrentPosition) != null) yield return Up(CurrentPosition).Value;
+        if (Down(CurrentPosition) != null) yield return Down(CurrentPosition).Value;
+        if (Left(CurrentPosition) != null) yield return Left(CurrentPosition).Value;
+        if (Right(CurrentPosition) != null) yield return Right(CurrentPosition).Value;
     }
 
     private void PrintNeighbours((int x, int y) p)
@@ -192,8 +198,8 @@ public class Hill
         }
     }
 
-    private (int x, int y)? Up => CurrentPosition.y >= 1 ? (CurrentPosition.x, CurrentPosition.y - 1) : null;
-    private (int x, int y)? Down => CurrentPosition.y < hill.GetLength(0) - 1 ? (CurrentPosition.x, CurrentPosition.y + 1) : null;
-    private (int x, int y)? Left => CurrentPosition.x >= 1 ? (CurrentPosition.x - 1, CurrentPosition.y) : null;
-    private (int x, int y)? Right => CurrentPosition.x < hill.GetLength(1) - 1 ? (CurrentPosition.x + 1, CurrentPosition.y) : null;
+    private (int x, int y)? Up((int x, int y) CurrentPosition) => CurrentPosition.y >= 1 ? (CurrentPosition.x, CurrentPosition.y - 1) : null;
+    private (int x, int y)? Down((int x, int y) CurrentPosition) => CurrentPosition.y < hill.GetLength(0) - 1 ? (CurrentPosition.x, CurrentPosition.y + 1) : null;
+    private (int x, int y)? Left((int x, int y) CurrentPosition) => CurrentPosition.x >= 1 ? (CurrentPosition.x - 1, CurrentPosition.y) : null;
+    private (int x, int y)? Right((int x, int y) CurrentPosition) => CurrentPosition.x < hill.GetLength(1) - 1 ? (CurrentPosition.x + 1, CurrentPosition.y) : null;
 }
